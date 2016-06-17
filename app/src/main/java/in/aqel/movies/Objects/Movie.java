@@ -1,14 +1,27 @@
-package in.aqel.movies;
+package in.aqel.movies.Objects;
 
 /**
  * Created by Ahammad on 29/03/16.
  */
-public class Movie {
+public class Movie{
 
-    String poster_path, overview, release_date, original_title;
+    String poster_path;
+    String overview;
+    String release_date;
+    String original_title;
+
+    String id;
     float vote_average;
 
     public Movie() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getPoster_path() {

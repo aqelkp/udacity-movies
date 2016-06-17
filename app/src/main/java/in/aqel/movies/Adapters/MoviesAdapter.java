@@ -1,4 +1,4 @@
-package in.aqel.movies;
+package in.aqel.movies.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,10 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import in.aqel.movies.Activities.MovieDetailActivity;
+import in.aqel.movies.Objects.Movie;
+import in.aqel.movies.R;
 
 /**
  * Created by Ahammad on 29/03/16.

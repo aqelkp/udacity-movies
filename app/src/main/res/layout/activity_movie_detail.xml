@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="in.aqel.movies.MovieDetailActivity">
+    tools:context=".Activities.MovieDetailActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -13,6 +13,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
+            android:id="@+id/layout"
             android:layout_height="wrap_content">
 
             <TextView
@@ -73,6 +74,22 @@
                 android:text="Overview"
                 android:id="@+id/tvOverview"
                 android:padding="16dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_margin="16dp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Trailers"
+                android:paddingLeft="16dp"
+                android:textStyle="bold" />
 
 
         </LinearLayout>
