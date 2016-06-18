@@ -5,5 +5,5 @@ package in.aqel.movies.Utils;
  */
 public class AppConstants {
 
-    public static String API_KEY = "df06d4ac6867f631dd076db6c659816d";
+    public static String API_KEY = "Paste your API key here";
 }

@@ -245,8 +245,6 @@ public class MovieDetailFragment extends Fragment {
 
             favourites.add(movie);
 
-            for (Movie movie : favourites) Log.d(LOG_TAG, movie.getOriginal_title());
-
         } else {
 
             favourites.remove(movie);
@@ -254,9 +252,6 @@ public class MovieDetailFragment extends Fragment {
                 if (favourites.get(i).getId().equals(this.movie.getId()))
                     favourites.remove(i);
             }
-
-            for (Movie movie : favourites) Log.d(LOG_TAG, movie.getOriginal_title());
-
 
         }
 
@@ -319,6 +314,23 @@ public class MovieDetailFragment extends Fragment {
 
                 break;
 
+            case R.id.menu_share:
+
+                if (videos != null &&   videos.size() > 0 ){
+
+                    Video video = videos.get(0);
+                    String url = "https://www.youtube.com/watch?v=" + video.getKey() ;
+                    String text = "Watch trailer of movie " + movie.getOriginal_title() + " \n" +
+                            video.getName() + " -- " + url;
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+                    sendIntent.setType("text/plain");
+                    startActivity(sendIntent);
+
+                }
+
+                break;
         }
 
         return super.onOptionsItemSelected(item);

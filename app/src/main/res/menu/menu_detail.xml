@@ -11,4 +11,11 @@
         udacity:showAsAction="always"
         />
 
+    <item
+        android:id="@+id/menu_share"
+        android:title="Favourites"
+        android:icon="@android:drawable/ic_menu_share"
+        udacity:showAsAction="always"
+        />
+
 </menu>
