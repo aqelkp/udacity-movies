@@ -1,7 +1,6 @@
 package in.aqel.movies.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import in.aqel.movies.Activities.MovieDetailActivity;
+import in.aqel.movies.Activities.MainActivity;
 import in.aqel.movies.Objects.Movie;
 import in.aqel.movies.R;
 
@@ -50,9 +49,9 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, MovieDetailActivity.class);
-                intent.putExtra(MovieDetailActivity.EXTRA_MOVIE, gson.toJson(movie));
-                context.startActivity(intent);
+
+                ((MainActivity) context).openDetails(movie);
+
             }
         });
 

@@ -1,4 +1,4 @@
-package in.aqel.movies.Activities;
+package in.aqel.movies.Fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,6 +27,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,14 +36,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.aqel.movies.Fragments.MovieDetailFragment;
 import in.aqel.movies.Objects.Movie;
 import in.aqel.movies.Objects.Review;
 import in.aqel.movies.Objects.Video;
 import in.aqel.movies.R;
 import in.aqel.movies.Utils.AppConstants;
 
-public class MovieDetailActivity extends AppCompatActivity {
+public class MovieDetailFragment extends Fragment {
 
     boolean isFav;
     Context context;
@@ -48,67 +51,69 @@ public class MovieDetailActivity extends AppCompatActivity {
     LinearLayout layout;
     List<Video> videos = new ArrayList<>();
     List<Review> reviews = new ArrayList<>();
+    Menu menu;
     Movie movie;
     ProgressDialog progressDialog;
     TextView tvTitle, tvOverview, tvReleaseDate, tvRating;
 
     public static String EXTRA_MOVIE = "movieString";
-    public static String LOG_TAG = "MovieDetailActivity";
+    public static String LOG_TAG = "MovieDetailFragment";
     public static String PREF_FAVOURITES = "favourites";
 
+    public MovieDetailFragment() {
+        // Required empty public constructor
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_detail);
+        setHasOptionsMenu(true);
+        if (getArguments() != null) {
 
-        context = MovieDetailActivity.this;
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        movie = gson.fromJson(getIntent().getExtras().getString(EXTRA_MOVIE), Movie.class);
-//
-//        ivPoster = (ImageView) findViewById(R.id.ivPoster);
-//        tvTitle = (TextView) findViewById(R.id.tvTitle);
-//        tvOverview = (TextView) findViewById(R.id.tvOverview);
-//        tvReleaseDate = (TextView) findViewById(R.id.tvReleaseDate);
-//        tvRating = (TextView) findViewById(R.id.tvRating);
-//        layout = (LinearLayout) findViewById(R.id.layout);
-//
-//        tvTitle.setText(movie.getOriginal_title());
-//        tvOverview.setText(movie.getOverview());
-//        tvReleaseDate.setText(movie.getRelease_date());
-//        tvRating.setText(movie.getVote_average() + "/10");
-//
-//        String imageUrl = "http://image.tmdb.org/t/p/w185/" + movie.getPoster_path();
-//        Picasso.with(this).load(imageUrl).into(ivPoster);
-//
-//        fetchMovieVideos();
-//
-//        isFav = getFavPref();
-
-        if (savedInstanceState == null) {
-            // Create the detail fragment and add it to the activity
-            // using a fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putString(EXTRA_MOVIE, getIntent().getStringExtra(EXTRA_MOVIE));
-            MovieDetailFragment fragment = new MovieDetailFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.item_detail_container, fragment)
-                    .commit();
         }
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_movie_detail, container, false);
+
+        context = getActivity();
+        movie = gson.fromJson(getArguments().getString(EXTRA_MOVIE), Movie.class);
+
+        ivPoster = (ImageView) view.findViewById(R.id.ivPoster);
+        tvTitle = (TextView) view.findViewById(R.id.tvTitle);
+        tvOverview = (TextView) view.findViewById(R.id.tvOverview);
+        tvReleaseDate = (TextView) view.findViewById(R.id.tvReleaseDate);
+        tvRating = (TextView) view.findViewById(R.id.tvRating);
+        layout = (LinearLayout) view.findViewById(R.id.layout);
+
+        tvTitle.setText(movie.getOriginal_title());
+        tvOverview.setText(movie.getOverview());
+        tvReleaseDate.setText(movie.getRelease_date());
+        tvRating.setText(movie.getVote_average() + "/10");
+
+        String imageUrl = "http://image.tmdb.org/t/p/w185/" + movie.getPoster_path();
+        Picasso.with(context).load(imageUrl).into(ivPoster);
+
+        fetchMovieVideos();
+
+        isFav = getFavPref();
+
+        return view;
     }
 
 
     private void fetchMovieVideos() {
 
-        progressDialog = new ProgressDialog(this);
+        progressDialog = new ProgressDialog(context);
         progressDialog.setTitle("Loading");
         progressDialog.setMessage("Fetching movie trailers");
         progressDialog.show();
 
         // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this);
+        RequestQueue queue = Volley.newRequestQueue(context);
         String url ="https://api.themoviedb.org/3/movie/" + movie.getId() + "/videos?api_key=" + AppConstants.API_KEY;
 
         // Request a string response from the provided URL.
@@ -163,13 +168,13 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private void fetchMovieReviews() {
 
-        progressDialog = new ProgressDialog(this);
+        progressDialog = new ProgressDialog(context);
         progressDialog.setTitle("Loading");
         progressDialog.setMessage("Fetching movie reviews");
         progressDialog.show();
 
         // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this);
+        RequestQueue queue = Volley.newRequestQueue(context);
         String url ="https://api.themoviedb.org/3/movie/" + movie.getId() + "/reviews?api_key=" + AppConstants.API_KEY;
 
         // Request a string response from the provided URL.
@@ -227,36 +232,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-
-        switch (item.getItemId()) {
-
-            case android.R.id.home:
-                finish();
-                break;
-
-//            case R.id.menu_fav:
-//
-//                if (isFav){
-//                    isFav = false;
-//                    item.setIcon(android.R.drawable.btn_star_big_off);
-//                } else {
-//                    isFav = true;
-//                    item.setIcon(android.R.drawable.btn_star_big_on);
-//                }
-//
-//                saveFavPref();
-//
-//                break;
-
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     private void saveFavPref() {
 
         SharedPreferences preferences = context.getSharedPreferences("pref", Context.MODE_PRIVATE);
@@ -310,6 +285,43 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu,MenuInflater inflater) {
+        // Do something that differs the Activity's menu here
+        super.onCreateOptionsMenu(menu, inflater);
 
+        inflater.inflate(R.menu.menu_detail, menu);
+        this.menu = menu;
+
+        if (isFav) menu.findItem(R.id.menu_fav).setIcon(android.R.drawable.btn_star_big_on);
+        else menu.findItem(R.id.menu_fav).setIcon(android.R.drawable.btn_star_big_off);
+
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+
+        switch (item.getItemId()) {
+
+            case R.id.menu_fav:
+
+                if (isFav){
+                    isFav = false;
+                    item.setIcon(android.R.drawable.btn_star_big_off);
+                } else {
+                    isFav = true;
+                    item.setIcon(android.R.drawable.btn_star_big_on);
+                }
+
+                saveFavPref();
+
+                break;
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
 }

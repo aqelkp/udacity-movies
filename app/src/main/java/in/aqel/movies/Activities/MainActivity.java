@@ -2,6 +2,7 @@ package in.aqel.movies.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -29,13 +30,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.aqel.movies.Utils.AppConstants;
-import in.aqel.movies.Objects.Movie;
 import in.aqel.movies.Adapters.MoviesAdapter;
+import in.aqel.movies.Fragments.MovieDetailFragment;
+import in.aqel.movies.Objects.Movie;
 import in.aqel.movies.R;
+import in.aqel.movies.Utils.AppConstants;
 
 public class MainActivity extends AppCompatActivity {
 
+    boolean mTwoPane;
     Context context;
     List<Movie> movies = new ArrayList<>();
     ProgressDialog progressDialog;
@@ -59,6 +62,13 @@ public class MainActivity extends AppCompatActivity {
 
         recycler = (RecyclerView) findViewById(R.id.recycler);
         recycler.setLayoutManager(new GridLayoutManager(this, 2));
+        if (findViewById(R.id.item_detail_container) != null) {
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-w900dp).
+            // If this view is present, then the
+            // activity should be in two-pane mode.
+            mTwoPane = true;
+        }
 
         fetchMovieList();
     }
@@ -126,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 mode = "top_rated";
                 fetchMovieList();
                 break;
-            case R.id.menu_fav:
+            case R.id.menu_order_fav:
                 showFavourites();
                 break;
         }
@@ -138,14 +148,17 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = context.getSharedPreferences("pref", Context.MODE_PRIVATE);
         String listString = preferences.getString(MovieDetailActivity.PREF_FAVOURITES, "");
 
-        ArrayList<Movie> favourites;
-        if (listString.isEmpty()) Toast.makeText(context, "You haven't added any movie as favourite",
-                Toast.LENGTH_SHORT).show();
-        else{
-            movies = new Gson().fromJson(listString, new TypeToken<ArrayList<Movie>>(){}.getType());
-            adapter = new MoviesAdapter(context, movies);
-            recycler.setAdapter(adapter);
+        if (listString.isEmpty() || listString == null){
+            movies = new ArrayList<>();
+        } else movies = new Gson().fromJson(listString, new TypeToken<ArrayList<Movie>>(){}.getType());
+        if (movies.size() < 1){
+            Toast.makeText(context, "You haven't added any movie as favourite", Toast.LENGTH_SHORT)
+                    .show();
+            return;
         }
+        adapter = new MoviesAdapter(context, movies);
+        recycler.setAdapter(adapter);
+
     }
 
 
@@ -163,5 +176,27 @@ public class MainActivity extends AppCompatActivity {
         Log.d(LOG_TAG, "Restore state " + mode);
 
     }
+
+    public void openDetails(Movie movie){
+
+        if (mTwoPane){
+
+            Bundle arguments = new Bundle();
+            arguments.putString(MovieDetailActivity.EXTRA_MOVIE, new Gson().toJson(movie));
+            MovieDetailFragment fragment = new MovieDetailFragment();
+            fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.item_detail_container, fragment)
+                    .commit();
+
+        } else {
+
+            Intent intent = new Intent(context, MovieDetailActivity.class);
+            intent.putExtra(MovieDetailActivity.EXTRA_MOVIE, new Gson().toJson(movie));
+            context.startActivity(intent);
+
+        }
+    }
+
 
 }
