@@ -1,4 +1,4 @@
-package in.aqel.movies.Adapters;
+package in.aqel.movies.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.aqel.movies.Objects.Video;
+import in.aqel.movies.objects.Video;
 import in.aqel.movies.R;
 
 /**

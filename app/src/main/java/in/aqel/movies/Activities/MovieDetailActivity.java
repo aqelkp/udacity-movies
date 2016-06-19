@@ -1,4 +1,4 @@
-package in.aqel.movies.Activities;
+package in.aqel.movies.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -14,10 +14,10 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.aqel.movies.Fragments.MovieDetailFragment;
-import in.aqel.movies.Objects.Movie;
-import in.aqel.movies.Objects.Review;
-import in.aqel.movies.Objects.Video;
+import in.aqel.movies.fragments.MovieDetailFragment;
+import in.aqel.movies.objects.Movie;
+import in.aqel.movies.objects.Review;
+import in.aqel.movies.objects.Video;
 import in.aqel.movies.R;
 
 public class MovieDetailActivity extends AppCompatActivity {

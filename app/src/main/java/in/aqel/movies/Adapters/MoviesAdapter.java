@@ -1,4 +1,4 @@
-package in.aqel.movies.Adapters;
+package in.aqel.movies.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -12,8 +12,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import in.aqel.movies.Activities.MainActivity;
-import in.aqel.movies.Objects.Movie;
+import in.aqel.movies.activities.MainActivity;
+import in.aqel.movies.objects.Movie;
 import in.aqel.movies.R;
 
 /**

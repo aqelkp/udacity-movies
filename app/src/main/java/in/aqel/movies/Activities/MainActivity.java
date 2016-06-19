@@ -1,4 +1,4 @@
-package in.aqel.movies.Activities;
+package in.aqel.movies.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -30,11 +30,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.aqel.movies.Adapters.MoviesAdapter;
-import in.aqel.movies.Fragments.MovieDetailFragment;
-import in.aqel.movies.Objects.Movie;
+import in.aqel.movies.adapters.MoviesAdapter;
+import in.aqel.movies.fragments.MovieDetailFragment;
+import in.aqel.movies.objects.Movie;
 import in.aqel.movies.R;
-import in.aqel.movies.Utils.AppConstants;
+import in.aqel.movies.utils.AppConstants;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,7 +66,9 @@ public class MainActivity extends AppCompatActivity {
             mTwoPane = true;
         }
 
-        fetchMovieList();
+        if (mode.equals("favourites")) showFavourites();
+        else fetchMovieList();
+
     }
 
     private void fetchMovieList() {
@@ -125,14 +127,15 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.menu_popular:
-                    mode = "popular";
-                    fetchMovieList();
+                mode = "popular";
+                fetchMovieList();
                 break;
             case R.id.menu_rating:
                 mode = "top_rated";
                 fetchMovieList();
                 break;
             case R.id.menu_order_fav:
+                mode = "favourites";
                 showFavourites();
                 break;
         }

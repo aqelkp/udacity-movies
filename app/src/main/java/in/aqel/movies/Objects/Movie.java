@@ -1,4 +1,4 @@
-package in.aqel.movies.Objects;
+package in.aqel.movies.objects;
 
 /**
  * Created by Ahammad on 29/03/16.

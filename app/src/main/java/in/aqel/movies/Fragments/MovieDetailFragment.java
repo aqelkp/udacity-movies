@@ -1,4 +1,4 @@
-package in.aqel.movies.Fragments;
+package in.aqel.movies.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -36,11 +36,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.aqel.movies.Objects.Movie;
-import in.aqel.movies.Objects.Review;
-import in.aqel.movies.Objects.Video;
+import in.aqel.movies.objects.Movie;
+import in.aqel.movies.objects.Review;
+import in.aqel.movies.objects.Video;
 import in.aqel.movies.R;
-import in.aqel.movies.Utils.AppConstants;
+import in.aqel.movies.utils.AppConstants;
 
 public class MovieDetailFragment extends Fragment {
 
@@ -229,7 +229,13 @@ public class MovieDetailFragment extends Fragment {
         String url = "https://www.youtube.com/watch?v=" + key;
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
-        startActivity(i);
+
+        if (i.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(i);
+        } else {
+            Toast.makeText(context, "Please install an internet browser to use this feature", Toast.LENGTH_SHORT)
+                    .show();
+        }
     }
 
     private void saveFavPref() {
